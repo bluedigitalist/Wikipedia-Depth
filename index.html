@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wikipedia Depth Finder</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+  <h2>Find Wikipedia Depth</h2>
+  <p>Wikipedia article depth is one of several possible rough indicators of the encyclopedia's collaborative quality, showing how frequently its articles are updated. It does not refer to academic quality, which cannot be computed, but to Wikipedian quality, i.e. the depth of collaborativeness—a descriptor that is highly relevant for a Wikipedia. This tool is based on <a href="https://bluedigitalist.com/wikipedia-article-depth-calculator/">Depth Calculator</a> and <a href="https://meta.wikimedia.org/wiki/Wikipedia_article_depth">Meta</a>.</p> 
+  <div>
+    <label for="articles">Number of Articles:</label>
+    <input type="number" id="articles" name="articles" required>
+    <span id="currentDepthArticles"></span>
+  </div>
+  <div>
+    <label for="edits">Number of Edits:</label>
+    <input type="number" id="edits" name="edits" required>
+    <span id="currentDepthEdits"></span>
+  </div>
+  <div>
+    <label for="totalPages">Total Pages:</label>
+    <input type="number" id="totalPages" name="totalPages" required>
+    <span id="currentDepthTotalPages"></span>
+  </div>
+
+  <div>
+    <label for="decimalPlaces">Decimal Places:</label>
+    <input type="radio" id="decimalPlaces2" name="decimalPlaces" value="2" onclick="setDecimalPlaces(2)">
+    <label for="decimalPlaces2">2</label>
+    <input type="radio" id="decimalPlaces3" name="decimalPlaces" value="3" onclick="setDecimalPlaces(3)" checked>
+    <label for="decimalPlaces3">3</label>
+  </div>
+
+  <br>
+  <button onclick="calculateDepth()">Calculate Depth</button>
+  <div id="result"></div>
+  
+
+</div>
+
+<script>
+
+var currentDecimalPlaces = 3; // Default to 3 decimal places
+
+function setDecimalPlaces(decimalPlaces) {
+  currentDecimalPlaces = decimalPlaces;
+  calculateDepth(currentDecimalPlaces);
+}
+
+function calculateDepth(decimalPlaces) {
+  var edits = parseInt(document.getElementById('edits').value);
+  var totalPages = parseInt(document.getElementById('totalPages').value);
+  var articles = parseInt(document.getElementById('articles').value);
+
+  var nonArticles = totalPages - articles;
+  var depth = (edits / totalPages) * Math.pow(nonArticles / articles, 2);
+
+  document.getElementById('result').innerHTML = 'Depth: ' + depth.toFixed(currentDecimalPlaces);
+}
+
+document.getElementById('articles').addEventListener('input', function() { calculateDepth(currentDecimalPlaces); });
+document.getElementById('edits').addEventListener('input', function() { calculateDepth(currentDecimalPlaces); });
+document.getElementById('totalPages').addEventListener('input', function() { calculateDepth(currentDecimalPlaces); });
+
+// Call calculateDepth with initial value for decimal places
+calculateDepth(currentDecimalPlaces);
+
+
+</script>
+</body>
+</html>
